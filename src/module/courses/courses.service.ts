@@ -1,4 +1,4 @@
-import { Course } from './../entities/course.entity';
+import { Course } from './entities/course.entity';
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
