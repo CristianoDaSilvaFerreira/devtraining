@@ -32,6 +32,10 @@ npm i typeorm @nestjs/typeorm pg
 ## Relacionamento entre as tabelas
 O TypeORM nos ajuda na questão da criação do relacionamento entre as tabelas, usando o decorators
 
-![01.png](/home/cristiano/Imagens/Pirnts/Projetos/Devtraining/01.png)
+![01](https://user-images.githubusercontent.com/68359459/166833101-a548afe2-1db8-4615-89d0-8cba3b09c77a.png)
 
-![02.png](/home/cristiano/Imagens/Pirnts/Projetos/Devtraining/02.png)
+
+![02](https://user-images.githubusercontent.com/68359459/166833113-0fbd4905-fe19-4162-885d-46a47ffcb17f.png)
+
+
+
