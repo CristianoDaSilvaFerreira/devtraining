@@ -18,12 +18,16 @@ export class CoursesService {
 
   // Método para lista todos cursos
   findAll() {
-    return this.courseRepository.findOne();
+    return this.courseRepository.find({
+      relations: ['tags'],
+    });
   }
 
   // Método para lista um curso
   findOne(id: string) {
-    const course = this.courseRepository.findOne(id);
+    const course = this.courseRepository.findOne(id, {
+      relations: ['tags'],
+    });
 
     if (!course) {
       throw new NotFoundException(`Course ID ${id} not found`);
@@ -56,7 +60,7 @@ export class CoursesService {
     const course = await this.courseRepository.preload({
       id: +id,
       ...updateCourseDto,
-      tags
+      tags,
     });
 
     if (!course) {
