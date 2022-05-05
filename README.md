@@ -224,7 +224,99 @@ Tendo feito essas configurações podemos criar as migrações dentro do contain
 
 ```bash
 npx typeorm migration:create -n CreateCoursesTable
+
+npx typeorm migration:create -n CreateTagsTable
 ```
 
 OBS.: Excluir as antigas migrações
+
+```ts
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+
+export class CreateCoursesTable1651749088685 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: 'courses',
+        columns: [
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+          },
+          {
+            name: 'description',
+            type: 'varchar',
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP'
+          }
+        ]
+      })
+    )
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('courses');
+  }
+}
+```
+
+```ts
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+
+export class CreateTagsTable1651749484102 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: 'tags',
+        columns: [
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP'
+          }
+        ]
+      })
+    )
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('tags');
+  }
+}
+```
+
+* Parar o serviço do Docker
+
+```bash
+docker-compose stop
+```
+
+* Excluir os volumes
+
+```bash
+docker-compose down
+```
+
+* Subir o Docker novamente
+
+```bash
+docker-compose up
+```
 
