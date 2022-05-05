@@ -96,7 +96,135 @@ npx typeorm migration:run
 ```
 
 
+* Refazendo as alterações
+
+```js
+npx typeorm migration:revert
+```
 
 
+# Trabalhando com o Docker
 
+### Dockerfile
+
+Criar na raiz do projeto um arquivo `Dockerfile` com essa configuração
+
+```js
+FROM node:16.13.0-alpine3.12
+
+RUN apk add --no-cache bash
+
+RUN npm install -g npm@8.9.0
+
+RUN npm install -g webpack
+
+RUN npm install -g @nestjs/cli
+
+USER node
+
+WORKDIR /home/node/app
+```
+
+### .docker
+
+Criar na raiz do projeto uma pasta `.docker` e dentro dela uma outra pasta `postgres` e nessa o arquivo `Dockefile` com essa configuração 
+
+```js 
+FROM postgres
+
+RUN usermod -u 1000 postgres
+```
+
+### Entrypoint
+
+Dentro da pasta `.docker` criar o arquivo `entrypoint.sh` com essa configuração
+
+```js
+#!/bin/bash
+
+npm install
+npm run build
+npx typeorm migration:run
+npm run start:dev
+```
+
+## docker-compose
+Criar na raiz do projeto um arquivo `docker-compose.yml` com essa configuração
+
+```js
+version: "3"
+
+services:
+  app:
+    build: .
+    entrypoint: .docker/entrypoint.sh
+    container_name: 'my_container_docker'
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - db
+
+  db:
+    build: .docker/postgres
+    container_name: 'my_container_docker'
+    restart: always
+    tty: true
+    ports:
+      - "5432:5432"
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD='my_password_from_docker'
+      - POSTGRES_DB=`my_database`
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: cursonestjs-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL='my_email_from_pgadmim'
+      - PGADMIN_DEFAULT_PASSWORD='my_password_from_pgadmim'
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+```
+
+
+No arquivo `tsconfig.json` incluir essas linhas no final 
+
+```json
+"include": ["src"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    ".docker"
+  ]
+```
+
+Depois dessa configurações roda o comando 
+
+```bash 
+docker-compose up
+``` 
+
+que ira subir o serviço do container do Docker
+Com o Docker em execução pode-se entrar no container através do comando 
+```bash
+docker-compose exec app bash
+```
+
+Pois agora estará trabalhando diretamente com o container do Docker configurado anteriormente, e qualquer comando para instalação terá que ser executado dentro desse container
+
+## Migrations
+Tendo feito essas configurações podemos criar as migrações dentro do container
+
+```bash
+npx typeorm migration:create -n CreateCoursesTable
+```
+
+OBS.: Excluir as antigas migrações
 
