@@ -320,3 +320,11 @@ docker-compose down
 docker-compose up
 ```
 
+* Abri o terminal do container
+
+```bash
+docker-compose exec app bash
+```
+
+
+

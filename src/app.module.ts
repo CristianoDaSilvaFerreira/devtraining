@@ -12,7 +12,8 @@ import { CoursesModule } from './module/courses/courses.module';
     username: 'postgres',
     password: 'docker',
     database: 'cursonestjs',
-    autoLoadEntities: true,
+    entities:[__dirname + '/**/*.entity.ts,.js'],
+    autoLoadEntities: false,
     synchronize: false
   }),
   CoursesModule,
