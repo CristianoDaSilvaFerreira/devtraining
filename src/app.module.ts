@@ -12,7 +12,7 @@ import { CoursesModule } from './module/courses/courses.module';
     username: 'postgres',
     password: 'docker',
     database: 'cursonestjs',
-    entities:[__dirname + '/**/*.entity.ts,.js'],
+    entities:[__dirname + '/**/*.entity.js'],
     autoLoadEntities: false,
     synchronize: false
   }),

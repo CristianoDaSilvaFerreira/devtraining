@@ -213,6 +213,7 @@ docker-compose up
 
 que ira subir o serviço do container do Docker
 Com o Docker em execução pode-se entrar no container através do comando 
+
 ```bash
 docker-compose exec app bash
 ```
